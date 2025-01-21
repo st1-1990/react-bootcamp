@@ -2,11 +2,13 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const PORT = 3001
+const path = require('path')
 
 app.listen(PORT, () => {           /** Aca se pasa un callback ya que el servidor ne inicia de forma asincrona, osea que le decimos que cuando termine de ejecutar el servidor ejecute el conslo.log*/
   console.log(`Server running on port ${PORT}`)
 })
 
+app.use(express.static('dist'))
 app.use(cors())
 app.use(express.json()) /* Con este le decimos que soporte las request y luego las parsee para tenerlo disponible en el request.body */
 
@@ -28,7 +30,8 @@ let notes = [
     }
   ]
   app.get('/', (request, response) => {
-    response.send('<h1>Hello World!</h1>')
+    /* response.send('<h1>Hello World!</h1>') */
+    response.sendFile(path.join(__dirname, 'dist', 'index.html'))
   })
 
   app.get('/api/notes/:id', (request, response) => { /* Aca recuperamos la nota cuyo id sea igual al que le enviamos en la request*/
